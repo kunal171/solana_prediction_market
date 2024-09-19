@@ -31,7 +31,7 @@ pub mod prediction_market {
         pool.status = PoolStatus::Active;
         pool.yes_token_mint = ctx.accounts.yes_token_mint.key();
         pool.no_token_mint = ctx.accounts.no_token_mint.key();
-        pool.bump = *ctx.bumps.get("pool").unwrap();
+        pool.bump = ctx.bumps.pool;
         pool.total_winning_tokens = 0; // Initialize to 0, will be set when result is declared
 
         Ok(())
@@ -151,7 +151,7 @@ pub mod prediction_market {
 
         // Burn the user's winning tokens
         let cpi_accounts = token::Burn {
-            mint: winning_token_account.mint.to_account_info(),
+            mint: winning_token_account.to_account_info(),
             from: winning_token_account.to_account_info(),
             authority: ctx.accounts.user.to_account_info(),
         };
